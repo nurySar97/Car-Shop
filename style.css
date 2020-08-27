@@ -1,0 +1,57 @@
+body {
+    background-color: rgb(28, 88, 90);
+}
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+}
+
+
+.list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+
+.car {
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    padding: 20px;
+    border: 1px solid black;
+    margin-top: 20px;
+    transition: box-shadow .2s linear,transform .2s linear;
+}
+
+
+.car:hover {
+    box-shadow: 0 0 5px #efefef;
+    transform: translateY(2%);
+}
+
+
+.car__img {
+    width: 200px;
+    height: 230px;
+}
+
+
+.marked {
+    border: 2px solid red;
+}
+
+
+.carButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.title {
+    margin-bottom: 20px;
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const Car = (props) => {
+            const classes = ['car']
+            if(props.car.marked == true) {
+                classes.push("marked")
+            }
+            return (
+                <div>
+                    <div className={classes.join(" ")} onClick={props.onMark} >
+                        <img className="car__img" src={props.car.src} alt=""/>
+                        <h3>{props.car.name}</h3>
+                        <p>{props.car.cost}</p>
+                    </div>
+                </div>
+            )
+        }
+        // const App = (props) =>{
+        //     let carElements = props.state.map(s=><Car key={s.id} name={s.name} cost={s.cost} src={s.src} />)
+        //     return (
+        //         <div className="container">
+        //             <div className="list">
+        //                 {carElements}
+        //             </div>
+        //         </div>
+        //     )
+        // }
+        class App extends React.Component {
+            state={
+                cars: [
+                    {id:"1", name:"Discovery", cost:"10.000$", marked:false, src:"https://www.hellomagazine.com/imagenes/travel/2020042388545/best-cars-for-dogs-and-owners/0-424-637/discovery-sport-z.jpg"},
+                    {id:"2", name:"Ferrari", cost:"35.000$", marked:false, src:"https://i.pinimg.com/736x/c7/f0/4c/c7f04cd2339978dedb7893769c94bec9.jpg"},
+                    {id:"3", name:"KIA", cost:"6.000$", marked:false, src:"https://www.kia.com/us/en/vehicles/k900/2020/_jcr_content/root/responsivegrid/mediatext_446753378.coreimg.100.1400.jpeg/1575494961737.jpeg"},
+                    {id:"4", name:"Ford", cost:"50.000$", marked:false, src:"https://pyxis.nymag.com/v1/imgs/20b/f74/6fd5fa6b9db3746f9a2c85e06f9f623a07-porce-918-spyder.rsquare.w700.jpg"},
+                    {id:"5", name:"Mazda", cost:"43.000$", marked:false, src:"https://www.mazdausa.com/siteassets/images/og-images/mazda-cx-30-subcompact-crossover.jpg"},
+                    {id:"6", name:"KIA Sport", cost:"62.000$", marked:false, src:"https://www.kia.com/us/en/vehicles/sportage/2020/_jcr_content/root/responsivegrid/mediatext.coreimg.100.1400.jpeg/1566248443438.jpeg"},
+                    {id:"7", name:"Chrysler", cost:"100.000$", marked:false, src:"https://www.chrysler.com/content/dam/fca-brands/na/chrysler/en_us/2020/300/vlp/desktop/2020-chrysler-300-sapppackage-4.jpg.image.700.jpg"},
+                    {id:"8", name:"Lancia 037", cost:"92.000$", marked:false, src:"https://www-dirtfish.imgix.net/Lancia-037-3QF.jpg?fit=crop&fm=pjpg&h=700&ixlib=php-1.2.1&q=70&w=700&wpsize=square-thumb"},
+                    {id:"9", name:"Porsche", cost:"200.000$", marked:false, src:"https://i.infocar.ua/i/2/6126/117503/1920x.jpg"},
+                    {id:"10", name:"Highlander", cost:"40.000$", marked:false, src:"https://toyota.com.ua/assets/cache_image/uploads/fastUpload/201904170101_1600x900_766.jpg"},
+                    {id:"11", name:"Opel Mokka", cost:"22.000$", marked:false, src:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Opel_Mokka_X_1.6_CDTI_ecoFLEX_4x4_Edition_%28Facelift%29_%E2%80%93_Frontansicht%2C_23._Dezember_2016%2C_D%C3%BCsseldorf.jpg/1200px-Opel_Mokka_X_1.6_CDTI_ecoFLEX_4x4_Edition_%28Facelift%29_%E2%80%93_Frontansicht%2C_23._Dezember_2016%2C_D%C3%BCsseldorf.jpg"},
+                    {id:"12", name:"Tesla Model X", cost:"48.000$", marked:false, src:"https://tesla-cdn.thron.com/delivery/public/image/tesla/efbb6471-e1b8-4533-b41a-6df9d50c0a42/bvlatuR/std/0x0/performance-hero@2"},
+                ],
+                visible: true,
+                appTitle: "Car Market"
+            }
+            handleMarked(name) {
+                const cars = [...this.state.cars] // this.state.cars.concat()
+                const car = cars.find(c=>c.name == name)
+                car.marked = !car.marked;
+                this.setState({cars})
+            }
+
+            toggleHandler() {
+                this.setState({visible: !this.state.visible})
+            }
+
+            sortCostHandler() {
+                const cars = [...this.state.cars].sort((a,b)=>(parseInt(a.cost) > parseInt(b.cost))? 0:-1)
+                this.setState({cars:cars})
+            }
+
+            sortNameHandler() {
+                const cars = [...this.state.cars].sort((a,b)=>(a.name > b.name)? 0:-1)
+                this.setState({cars:cars})
+            }
+
+            titleChangeHandler(value) {
+                if(value.trim() === "") {
+                    return
+                }
+                this.setState({appTitle: value})
+            }
+
+            renderCars () {
+                if(!this.state.visible) {
+                    return null
+                }
+                return this.state.cars.map((car,index)=> <Car car={ car } key={ index } onMark= { this.handleMarked.bind(this , car.name) } />)
+            }
+            render () {
+                let style = {
+                    marginLeft: "20px"
+                }
+                return (
+                    <div className="container">
+                        <h1>{this.state.appTitle}</h1>
+                        <div className="title">
+                            <input value={this.state.appTitle} onChange={()=>this.titleChangeHandler(event.target.value)} type="text" placeholder="change title" />
+                        </div>
+                        <div className="carButtons">
+                            <button onClick={()=> this.toggleHandler()}>Toggle</button>
+                            <button onClick={()=> this.sortCostHandler.call(this)}>Sort By Cost</button>
+                            <button onClick={()=> this.sortNameHandler.call(this)}>Sort By Name</button>
+                        </div>
+                        <hr/>
+                        <div className="list">
+                           {this.renderCars()}
+                        </div>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <App/> , document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
